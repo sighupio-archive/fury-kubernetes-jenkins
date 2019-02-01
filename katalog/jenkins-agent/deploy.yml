@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-agent
+  labels:
+    app: jenkins-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-agent
+  template:
+    metadata:
+      labels:
+        app: jenkins-agent
+        jenkins/jenkins-slave: "true"
+    spec:
+      serviceAccountName: jenkins-agent
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      containers:
+        - name: jenkins
+          image: jenkins/jnlp-slave:3.27-1-alpine
+          imagePullPolicy: Always
+          env:
+            - name: JENKINS_AGENT_WORKDIR
+              value: $(AGENT_WORKDIR) # this variable gets inherited from jenkinsci/slave image
+            - name: JENKINS_TUNNEL
+              value: $(JENKINS_AGENT_SERVICE_HOST):$(JENKINS_AGENT_SERVICE_PORT)
+            - name: JENKINS_URL
+              value: http://$(JENKINS_SERVICE_HOST):$(JENKINS_SERVICE_PORT)
+            - name: JENKINS_AGENT_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: jenkins-agent
+                  key: jenkins-agent-name
+            - name: JENKINS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jenkins-agent
+                  key: jenkins-agent-secret
+          resources:
+            requests:
+              cpu: 500m
+              memory: 500Mi
+            limits:
+              cpu: 1000m
+              memory: 1Gi

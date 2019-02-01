@@ -1,0 +1,22 @@
+[Unit]
+Description=Jenkins Slave
+Wants=network.target
+After=network.target
+
+[Service]
+Restart=always
+RestartSec=10
+StartLimitInterval=0
+
+User={{ jenkins_agent_user }}
+Group={{ jenkins_agent_user }}
+
+ExecStart=/usr/bin/java {{ jenkins_agent_java_opts }} -jar {{ jenkins_agent_install_dir }}/remoting.jar -jnlpUrl {{ jenkins_agent_server_url_path }} -secret {{ jenkins_agent_secret }} -workDir {{ jenkins_agent_home }}
+
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

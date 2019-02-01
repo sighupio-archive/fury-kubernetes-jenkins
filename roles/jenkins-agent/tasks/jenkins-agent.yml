@@ -1,0 +1,50 @@
+---
+
+- name: Making sure that the installation directory is present
+  file:
+    name: "{{ jenkins_agent_install_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Download Jenkins agent
+  get_url:
+    url: "https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/{{ jenkins_agent_version }}/remoting-{{ jenkins_agent_version }}.jar"
+    dest: "{{ jenkins_agent_install_dir }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create symlink to Jenkins agent
+  file:
+    src: "{{ jenkins_agent_install_dir }}/remoting-{{ jenkins_agent_version }}.jar"
+    dest: "{{ jenkins_agent_install_dir }}/remoting.jar"
+    state: link
+
+- name: Create jenkins-agent user
+  user:
+    name: "{{ jenkins_agent_user }}"
+    append: true
+    groups: "{{ jenkins_agent_additional_groups }}"
+    home: "{{ jenkins_agent_home }}"
+    password: "{{ lookup('password', '/dev/null length=18') | password_hash('sha512') }}"
+    shell: "{{ jenkins_agent_shell }}"
+    system: true
+    update_password: on_create
+    state: present
+
+- name: Create Jenkins agent systemd service
+  template:
+    src: jenkins-agent.systemd.j2
+    dest: /etc/systemd/system/jenkins-agent.service
+    owner: root
+    group: root
+    mode: 0640
+
+- name: Enable and start Jenkins agent service
+  systemd:
+    name: jenkins-agent
+    daemon_reload: true
+    enabled: true
+    state: started

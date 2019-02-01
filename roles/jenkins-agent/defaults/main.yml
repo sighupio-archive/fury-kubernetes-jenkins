@@ -1,0 +1,11 @@
+---
+jenkins_agent_install: true
+jenkins_agent_user: jenkins
+jenkins_agent_additional_groups: []
+jenkins_agent_home: /var/lib/jenkins
+jenkins_agent_shell: /bin/bash
+jenkins_agent_version: "3.26"
+jenkins_agent_install_dir: /usr/share/jenkins
+jenkins_agent_java_opts: "-Xms512m -Xmx512m"
+jenkins_agent_server_url_path: "http://localhost/slave-agent.jnlp"
+jenkins_agent_secret: "admin:admin"

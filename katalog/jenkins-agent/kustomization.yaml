@@ -1,0 +1,11 @@
+namespace: jenkins
+
+resources:
+  - deploy.yml
+  - rbac.yml
+
+secretGenerator:
+  - name: jenkins-agent
+    commands:
+      jenkins-agent-name: "/bin/echo -n jenkins-k8s-minion"
+      jenkins-agent-secret: "/bin/echo -n 123456"

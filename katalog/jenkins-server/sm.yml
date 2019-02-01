@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: jenkins-master
+  name: jenkins-master
+spec:
+  endpoints:
+  - interval: 10s
+    port: http
+    scheme: http
+    path: /prometheus
+  jobLabel: k8s-app
+  namespaceSelector:
+    matchNames:
+    - jenkins
+  selector:
+    matchLabels:
+      app: jenkins-master

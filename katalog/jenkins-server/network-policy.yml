@@ -1,0 +1,29 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: jenkins-master
+spec:
+  podSelector:
+    matchLabels:
+      app: jenkins-master
+  ingress:
+    - ports:
+      - port: 8080
+    - from:
+      - podSelector:
+          matchLabels:
+            "jenkins/jenkins-slave": "true"
+      ports:
+      - port: 50000
+---
+# if no ports are declared, everything is closed!
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: jenkins-slave
+spec:
+  podSelector:
+    matchLabels:
+      "jenkins/jenkins-slave": "true"
+
+

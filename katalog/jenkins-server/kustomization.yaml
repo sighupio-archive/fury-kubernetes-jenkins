@@ -1,0 +1,22 @@
+namespace: jenkins
+
+resources:
+ - deploy.yml
+ - rbac.yml
+ - network-policy.yml
+ - sm.yml
+
+configMapGenerator:
+ - name: jenkins
+   files:
+   - conf/plugins.txt
+   - conf/apply_config.sh
+   - conf/config.xml
+   # - conf/jenkins.model.JenkinsLocationConfiguration.xml
+   - conf/jenkins.CLI.xml
+
+secretGenerator:
+ - name: jenkins
+   commands:
+     jenkins-admin-password: "/bin/echo -n admin"
+     jenkins-admin-user: "/bin/echo -n admin"
