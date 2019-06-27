@@ -1,27 +1,8 @@
 ---
 
-- name: Adding Oracle JDK apt key
-  apt_key:
-    keyserver: keyserver.ubuntu.com
-    id: "{{ jenkins_agent_oracle_jdk_key_id }}"
-    state: present
-
-- name: Add Oracle JDK apt repository
-  apt_repository:
-    repo: "deb http://ppa.launchpad.net/webupd8team/java/ubuntu xenial main"
-    update_cache: true
-    state: present
-
-- name: Accept Oracle license
-  debconf:
-    name: oracle-java8-installer
-    question: shared/accepted-oracle-license-v1-1
-    value: "true"
-    vtype: select
-
-- name: Install Oracle JDK
+- name: Install OpenJDK
   apt:
-    name: oracle-java8-installer
+    name: openjdk-8-jdk
     state: present
 
 - name: Setup jenkins-agent
