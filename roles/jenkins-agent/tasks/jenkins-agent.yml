@@ -25,6 +25,7 @@
 - name: Create jenkins-agent user
   user:
     name: "{{ jenkins_agent_user }}"
+    uid: "{{ jenkins_agent_user_uid }}"
     append: true
     groups: "{{ jenkins_agent_additional_groups }}"
     home: "{{ jenkins_agent_home }}"
