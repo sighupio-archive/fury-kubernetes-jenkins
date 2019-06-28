@@ -1,8 +1,8 @@
 ---
 
-- name: Install OpenJDK
+- name: Install OpenJDK 8 JRE
   apt:
-    name: openjdk-8-jdk
+    name: openjdk-8-jre
     state: present
 
 - name: Setup jenkins-agent
