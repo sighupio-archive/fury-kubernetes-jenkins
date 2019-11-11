@@ -16,3 +16,14 @@ Following packages are included in Fury Kubernetes Jenkins roles:
 
 - [jenkins-agent](roles/jenkins-agent): Ansible role used to deploy Jenkins agents
 in virtual machines *(debian based)*. Default version: **3.26**.
+
+
+## Compatibility
+
+| Module Version / Kubernetes Version | 1.14.X             | 1.15.X             | 1.16.X             |
+|-------------------------------------|:------------------:|:------------------:|:------------------:|
+| v1.0.0                              |                    |                    |                    |
+
+- :white_check_mark: Compatible
+- :warning: Has issues
+- :x: Incompatible
